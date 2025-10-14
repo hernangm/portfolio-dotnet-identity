@@ -1,0 +1,162 @@
+name: Portfolio.Dotnet.Identity.Server CI
+
+env:
+  AZURE_WEBAPP_NAME: portfolio-dotnet-identity
+  AZURE_WEBAPP_PACKAGE_PATH: './src/Portfolio.Dotnet.Identity.Server/publish'
+  DOTNET_VERSION: '9.x'
+  SOLUTION_PATH: './src/Portfolio.Dotnet.Identity.sln'
+  API_PROJECT_PATH: './src/Portfolio.Dotnet.Identity/Portfolio.Dotnet.Identity.Server.csproj'
+  PUBLISH_DIR: './publish'
+  SMOKE_TEST_PROJECT_PATH: './src/Portfolio.Dotnet.Identity.Server.Tests/Portfolio.Dotnet.Identity.Server.Tests.csproj'
+  TEST_ARTIFACT_PATH: './test-artifact'
+  EF_BUNDLE_ARTIFACT_PATH: './ef-bundle-artifact'
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore
+        run: dotnet restore ${{ env.SOLUTION_PATH }}
+
+      - name: Build
+        run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
+        env:
+          ASPNETCORE_ENVIRONMENT: Production
+      
+      # - name: Test
+      #   run: dotnet test ${{ env.SOLUTION_PATH }} --configuration Release --no-restore --no-build --verbosity normal
+
+      - name: Publish API
+        run: dotnet publish ${{ env.API_PROJECT_PATH }} --configuration Release --no-restore --no-build -o ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        env:
+          ASPNETCORE_ENVIRONMENT: Production
+
+      - name: Upload API Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: webapp
+          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+      - name: Publish Test Project
+        run: dotnet publish ${{ env.SMOKE_TEST_PROJECT_PATH }} --configuration Release --no-build -o ${{ env.TEST_ARTIFACT_PATH }}
+
+      - name: Upload Test Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: testapp
+          path: ${{ env.TEST_ARTIFACT_PATH }}
+
+      - name: Create EF Migration Bundle
+        run: | 
+            dotnet tool install --global dotnet-ef 
+            dotnet ef migrations bundle --project ${{ env.API_PROJECT_PATH }} --output ${{ env.EF_BUNDLE_ARTIFACT_PATH }} --context AbstractsDbContext --self-contained -r linux-x64 --verbose
+
+      - name: Upload EF Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: efbundle
+          path: ${{ env.EF_BUNDLE_ARTIFACT_PATH }}
+
+  deploy:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Download API artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: webapp
+          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+      - name: Download EF Bundle artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: efbundle
+          path: ${{ env.EF_BUNDLE_ARTIFACT_PATH }}
+
+      - name: Make ef-bundle-artifact executable
+        run: chmod +x ./ef-bundle-artifact/ef-bundle-artifact
+
+      - name: Run EF Migration Bundle
+        run: |
+            echo "CONNSTR=${{ env.CONNSTR }}" >> $GITHUB_ENV
+            ${{ env.EF_BUNDLE_ARTIFACT_PATH }}/ef-bundle-artifact --verbose
+        env:
+            CONNSTR: ${{ secrets.DB_SQLSERVER_CONNECTION }}
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        env:
+          ASPNETCORE_ENVIRONMENT: Production
+
+  smoke_test:
+    runs-on: ubuntu-latest
+    needs: deploy # This ensures the deploy job completes successfully first
+    steps:
+      - name: Download Test artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: testapp
+          path: ${{ env.TEST_ARTIFACT_PATH }}
+
+      - name: Wait for application startup
+        run: |
+          # Use one of the waiting mechanisms described above
+          # Example using wait-for-it.sh
+          # ./wait-for-it.sh your-app-host:port -t 60
+
+          # Example using a custom health check
+          for i in $(seq 1 12); do # Try for 1 minute (12 * 5 seconds)
+            if curl -f https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net/health; then
+              echo "Application is up and healthy!"
+              exit 0
+            fi
+            echo "Waiting for application health check..."
+            sleep 5
+          done
+          echo "Application health check timed out."
+          exit 1
+
+      - name: Run Smoke Tests
+        run: dotnet test ${{ env.TEST_ARTIFACT_PATH }}/Portfolio.Dotnet.Api.Tests.dll --filter "TestCategory=Smoke"
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
+          ASPNETCORE_URLS: https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net
+        if: success() # Only run if the previous steps succeeded
+
+      - name: Fail Deployment if Smoke Tests Fail
+        if: failure()
+        run: |
+          echo "Smoke tests failed!"
+          exit 1

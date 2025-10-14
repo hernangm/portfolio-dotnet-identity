@@ -1,0 +1,45 @@
+﻿body {
+    background-color: #edf2f6;
+}
+.nav-page {
+    margin-bottom: 3em;
+    background-color: white;
+}
+.navbar {
+    border-bottom: .375em solid #dfdfdf;
+    padding: 1rem !important;
+    justify-content: center !important;
+}
+
+.btn-primary {
+    background-color: #2984b6;
+    border-color: #2984b6;
+}
+
+.icon-banner {
+    height: 30px;
+}
+body-container {
+  margin-top: 60px;
+  padding-bottom: 40px; }
+
+.welcome-page li {
+  list-style: none;
+  padding: 4px; }
+
+.logged-out-page iframe {
+  display: none;
+  width: 0;
+  height: 0; }
+
+.grants-page .card {
+  margin-top: 20px;
+  border-bottom: 1px solid lightgray; }
+  .grants-page .card .card-title {
+    font-size: 120%;
+    font-weight: bold; }
+    .grants-page .card .card-title img {
+      width: 100px;
+      height: 100px; }
+  .grants-page .card label {
+    font-weight: bold; }
