@@ -1,13 +1,16 @@
 name: Portfolio.Dotnet.Identity.Server CI
 
 env:
-  AZURE_WEBAPP_NAME: portfolio-dotnet-identity
-  AZURE_WEBAPP_PACKAGE_PATH: './src/Portfolio.Dotnet.Identity.Server/publish'
-  DOTNET_VERSION: '9.x'
   SOLUTION_PATH: './src/Portfolio.Dotnet.Identity.sln'
   API_PROJECT_PATH: './src/Portfolio.Dotnet.Identity.Server/Portfolio.Dotnet.Identity.Server.csproj'
-  PUBLISH_DIR: './publish'
+  DATA_PROJECT_PATH: './src/Portfolio.Dotnet.Identity.Data/Portfolio.Dotnet.Identity.Data.csproj'
+  DATA_CONTEXT_NAME: 'ThisIdentityDbContext'
   SMOKE_TEST_PROJECT_PATH: './src/Portfolio.Dotnet.Identity.Server.Tests/Portfolio.Dotnet.Identity.Server.Tests.csproj'
+  AZURE_WEBAPP_NAME: portfolio-dotnet-identity
+  AZURE_WEBAPP_PACKAGE_PATH: './src/Portfolio.Dotnet.Identity.Server/publish'
+  AZURE_EFBUNDLE_PACKAGE_PATH: './src/Portfolio.Dotnet.Api/publish'
+  DOTNET_VERSION: '9.x'
+  PUBLISH_DIR: './publish'
   TEST_ARTIFACT_PATH: './test-artifact'
   EF_BUNDLE_ARTIFACT_PATH: './ef-bundle-artifact'
 
@@ -65,7 +68,7 @@ jobs:
       - name: Create EF Migration Bundle
         run: | 
             dotnet tool install --global dotnet-ef 
-            dotnet ef migrations bundle --project ${{ env.API_PROJECT_PATH }} --output ${{ env.EF_BUNDLE_ARTIFACT_PATH }} --context AbstractsDbContext --self-contained -r linux-x64 --verbose
+            dotnet ef migrations bundle --project ${{ env.DATA_PROJECT_PATH }} --output ${{ env.EF_BUNDLE_ARTIFACT_PATH }} --context  ${{ env.DATA_CONTEXT_NAME }} --self-contained -r linux-x64 --verbose
 
       - name: Upload EF Artifact
         uses: actions/upload-artifact@v4
