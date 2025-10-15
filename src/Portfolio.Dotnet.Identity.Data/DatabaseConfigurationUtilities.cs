@@ -5,18 +5,24 @@ namespace Portfolio.Dotnet.Identity.Data
 {
     public static class DatabaseConfigurationUtilities
     {
-        public static Action<IServiceProvider, DbContextOptionsBuilder> ConfigureDatabase(string? assemblyName, string connectionString, bool isProduction)
-        {
-            void b(IServiceProvider provider, DbContextOptionsBuilder builder)
-            {
-                builder.UseNpgsql(connectionString, sqlOptions =>
-                {
-                    sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
-                    sqlOptions.MigrationsAssembly(assemblyName);
-                    sqlOptions.EnableRetryOnFailure();
-                });
+        //public static Action<IServiceProvider, DbContextOptionsBuilder> ConfigureDbContextOptionsBuilder(string connectionString, bool isProduction)
+        //{
+        //    void b(IServiceProvider provider, DbContextOptionsBuilder builder)
+        //    {
+        //        builder.ConfigureIdentityDataContext(connectionString, isProduction);
+        //    }
+        //    return b;
+        //}
 
-                builder.ConfigureWarnings(w =>
+        public static DbContextOptionsBuilder ConfigureIdentityDataContext(this DbContextOptionsBuilder builder, string connectionString, bool isProduction)
+        {
+            builder.UseNpgsql(connectionString, sqlOptions =>
+            {
+                sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                //sqlOptions.MigrationsAssembly(assemblyName);
+                sqlOptions.EnableRetryOnFailure();
+            });
+            builder.ConfigureWarnings(w =>
                 {
                     if (isProduction)
                     {
@@ -27,8 +33,7 @@ namespace Portfolio.Dotnet.Identity.Data
                         w.Throw(RelationalEventId.MultipleCollectionIncludeWarning);
                     }
                 });
-            }
-            return b;
+            return builder;
         }
     }
 }

@@ -10,7 +10,6 @@ using Portfolio.Dotnet.Identity.Email.Registration;
 using Portfolio.Dotnet.Identity.Server.Config;
 using Portfolio.Dotnet.Identity.Server.Infra;
 using Portfolio.Dotnet.Identity.Server.Init;
-using System.Reflection;
 
 internal class Program
 {
@@ -56,7 +55,10 @@ internal class Program
 
         var applicationSettings = builder.Services.RegisterApplicationSettings<ApplicationSettings>(builder.Configuration);
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new NullReferenceException("connectionString");
-        var configureAction = DatabaseConfigurationUtilities.ConfigureDatabase(Assembly.GetExecutingAssembly().GetName().Name, connectionString, applicationSettings.IsProduction());
+        void configureAction(IServiceProvider provider, DbContextOptionsBuilder builder)
+        {
+            builder.ConfigureIdentityDataContext(connectionString, applicationSettings.IsProduction());
+        }
 
         //builder.Services.RegisterApplications(applicationSettings);
         builder.Services.RegisterAuthentication(applicationSettings.ExternalIdentityProviders);
