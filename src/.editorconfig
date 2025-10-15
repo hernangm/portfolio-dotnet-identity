@@ -1,6 +1,16 @@
 # Remove the line below if you want to inherit .editorconfig settings from higher directories
 root = true
 
+# Exclude generated files from analysis
+[*.designer.cs]
+generated_code = true
+
+[*.generated.cs]
+generated_code = true
+
+[**/Migrations/*.cs]
+generated_code = true
+
 # C# files
 [*.cs]
 
