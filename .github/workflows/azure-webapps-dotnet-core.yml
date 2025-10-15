@@ -45,25 +45,25 @@ jobs:
       # - name: Test
       #   run: dotnet test ${{ env.SOLUTION_PATH }} --configuration Release --no-restore --no-build --verbosity normal
 
-      - name: Publish API
-        run: dotnet publish ${{ env.API_PROJECT_PATH }} --configuration Release --no-restore --no-build -o ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-        env:
-          ASPNETCORE_ENVIRONMENT: Production
+      # - name: Publish API
+      #   run: dotnet publish ${{ env.API_PROJECT_PATH }} --configuration Release --no-restore --no-build -o ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      #   env:
+      #     ASPNETCORE_ENVIRONMENT: Production
 
-      - name: Upload API Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: webapp
-          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      # - name: Upload API Artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: webapp
+      #     path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
-      - name: Publish Test Project
-        run: dotnet publish ${{ env.SMOKE_TEST_PROJECT_PATH }} --configuration Release --no-build -o ${{ env.TEST_ARTIFACT_PATH }}
+      # - name: Publish Test Project
+      #   run: dotnet publish ${{ env.SMOKE_TEST_PROJECT_PATH }} --configuration Release --no-build -o ${{ env.TEST_ARTIFACT_PATH }}
 
-      - name: Upload Test Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: testapp
-          path: ${{ env.TEST_ARTIFACT_PATH }}
+      # - name: Upload Test Artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: testapp
+      #     path: ${{ env.TEST_ARTIFACT_PATH }}
 
       - name: Create EF Migration Bundle
         run: | 
