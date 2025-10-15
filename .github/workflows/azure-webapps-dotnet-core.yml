@@ -25,13 +25,13 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: Production
+    environment: 'Production'
     
     steps:
-      - name: Print Environment Name
-        run: |
-          echo "ENVIRONMENT_NAME=${{ environment.name }}" >> $GITHUB_ENV
-          echo "Environment name: $ENVIRONMENT_NAME"
+      # - name: Print Environment Name
+      #   run: |
+      #     echo "ENVIRONMENT_NAME=${{ environment.name }}" >> $GITHUB_ENV
+      #     echo "Environment name: $ENVIRONMENT_NAME"
 
       - uses: actions/checkout@v4
 
