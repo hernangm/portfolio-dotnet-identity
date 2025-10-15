@@ -112,7 +112,7 @@ jobs:
       - name: Run EF Migration Bundle
         run: |
             chmod +x ${{ env.EF_BUNDLE_ARTIFACT_PATH }}/ef-bundle-artifact
-            ${{ env.EF_BUNDLE_ARTIFACT_PATH }}/ef-bundle-artifact --verbose --connection ${{ secrets.DB_SERVER_CONNECTION }}
+            ${{ env.EF_BUNDLE_ARTIFACT_PATH }}/ef-bundle-artifact --verbose --connection "${{ secrets.DB_SERVER_CONNECTION }}"
         env:
             CONNSTR: ${{ secrets.DB_SQLSERVER_CONNECTION }}
 
