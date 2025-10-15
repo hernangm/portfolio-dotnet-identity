@@ -72,20 +72,28 @@ internal class Program
         if (builder.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
-            //app.InitializeDatabase(app.Services.GetRequiredService<ApplicationScannerResults>());
             IdentityModelEventSource.ShowPII = true;
         }
 
+        app.UseHttpsRedirection();
+        app.UseStaticFiles();
+        app.UseRouting();
+        app.UseCors(AllowAllOrigins);
+        app.UseAuthentication();
+        app.UseAuthorization();
+        app.UseIdentityServer();
+        app.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/{id?}");
+        app.MapControllers();
+        app.MapRazorPages().RequireAuthorization();
         app.UseSwagger(AppId, Version);
-
         app.UseCookiePolicy(new CookiePolicyOptions
         {
             Secure = CookieSecurePolicy.Always,
             MinimumSameSitePolicy = SameSiteMode.Unspecified
         });
 
-        app.UseStaticFiles();
-        app.UseRouting();
 
         //app.Use(async (ctx, next) =>
         //{
@@ -96,18 +104,8 @@ internal class Program
         //    await next();
         //});
 
-        app.UseCors(AllowAllOrigins);
-        app.UseAuthentication();
-        app.UseAuthorization();
-        app.UseIdentityServer();
 
-        app.MapControllerRoute(
-            name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}");
 
-        app.MapControllers();
-
-        app.MapRazorPages().RequireAuthorization();
 
         app.Run();
 
