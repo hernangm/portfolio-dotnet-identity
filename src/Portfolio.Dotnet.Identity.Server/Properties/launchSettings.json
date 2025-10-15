@@ -17,7 +17,9 @@
       "launchUrl": "https://localhost:8443",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "httpPort": 8080,
+      "sslPort": 8443
     }
   }
 }
