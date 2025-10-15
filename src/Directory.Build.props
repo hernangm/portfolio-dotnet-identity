@@ -2,4 +2,9 @@
   <PropertyGroup>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
+
+  <Target Name="FormatDocument" BeforeTargets="Build">
+    <Exec Command="dotnet format" />
+  </Target>
+
 </Project>

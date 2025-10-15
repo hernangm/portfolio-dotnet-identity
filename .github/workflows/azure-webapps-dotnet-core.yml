@@ -50,7 +50,7 @@ jobs:
         run: dotnet restore ${{ env.SOLUTION_PATH }}
 
       - name: Run .NET Format Check
-        run: dotnet format ${{ env.SOLUTION_PATH }} --verify-no-changes --verbosity detailed
+        run: dotnet format ${{ env.SOLUTION_PATH }} --verify-no-changes --verbosity detailed --no-restore
 
       - name: Run NuGet Security Audit
         run: dotnet list ${{ env.SOLUTION_PATH }} package --vulnerable --include-transitive
