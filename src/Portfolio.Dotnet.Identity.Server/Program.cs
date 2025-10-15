@@ -22,6 +22,7 @@ internal class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddRazorPages();
+        builder.Services.AddHealthChecks(); // Add Health Checks service
 
         builder.Services.AddDataProtection()
             //.SetApplicationName("ais")
@@ -78,6 +79,7 @@ internal class Program
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseRouting();
+        app.MapHealthChecks("/health"); // Map the health check endpoint
         app.UseCors(AllowAllOrigins);
         app.UseAuthentication();
         app.UseAuthorization();

@@ -54,5 +54,6 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 
-/src/Portfolio.Dotnet.Api/Properties/launchSettings.json
-/src/Portfolio.Dotnet.Api/*.user
+*.user
+appsettings.*.json
+*.jwk
