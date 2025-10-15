@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Portfolio.Dotnet.Identity.Server\Portfolio.Dotnet.Identity.Server.csproj" />
+    <ProjectReference Include="..\Portfolio.Dotnet.Identity.Users.Data\Portfolio.Dotnet.Identity.Users.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>

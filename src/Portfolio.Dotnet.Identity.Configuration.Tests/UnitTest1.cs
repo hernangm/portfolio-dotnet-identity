@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Portfolio.Dotnet.Identity.Configuration.Utils;
-using Portfolio.Dotnet.Identity.Data;
+using Portfolio.Dotnet.Identity.Users.Data;
 
 namespace Portfolio.Dotnet.Identity.Configuration.Tests
 {

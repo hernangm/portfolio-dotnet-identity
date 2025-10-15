@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Portfolio.Dotnet.Identity.Data
+namespace Portfolio.Dotnet.Identity.Users.Data
 {
     public class ThisRoleClaim : IdentityRoleClaim<int>
     {

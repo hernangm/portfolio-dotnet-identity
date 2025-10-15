@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Portfolio.Dotnet.Identity.Configuration\Portfolio.Dotnet.Identity.Configuration.csproj" />
-    <ProjectReference Include="..\Portfolio.Dotnet.Identity.Data\Portfolio.Dotnet.Identity.Data.csproj" />
+    <ProjectReference Include="..\Portfolio.Dotnet.Identity.Users.Data\Portfolio.Dotnet.Identity.Users.Data.csproj" />
   </ItemGroup>
 
 </Project>

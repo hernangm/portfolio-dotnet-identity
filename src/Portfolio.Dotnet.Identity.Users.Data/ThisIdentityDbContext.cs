@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Portfolio.Dotnet.Identity.Data
+namespace Portfolio.Dotnet.Identity.Users.Data
 {
     public class ThisIdentityDbContext(DbContextOptions<ThisIdentityDbContext> options) : IdentityDbContext<ThisUser, ThisRole, int, ThisUserClaim, ThisUserRole, ThisUserLogin, ThisRoleClaim, ThisUserToken>(options)
     {

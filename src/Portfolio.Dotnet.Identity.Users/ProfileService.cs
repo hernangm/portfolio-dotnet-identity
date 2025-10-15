@@ -2,7 +2,7 @@
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
-using Portfolio.Dotnet.Identity.Data;
+using Portfolio.Dotnet.Identity.Users.Data;
 
 namespace Portfolio.Dotnet.Identity.Users
 {

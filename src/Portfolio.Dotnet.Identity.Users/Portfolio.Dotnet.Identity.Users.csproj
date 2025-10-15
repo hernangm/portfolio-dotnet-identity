@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Portfolio.Dotnet.Identity.Data\Portfolio.Dotnet.Identity.Data.csproj" />
     <ProjectReference Include="..\Portfolio.Dotnet.Identity.Email\Portfolio.Dotnet.Identity.Email.csproj" />
+    <ProjectReference Include="..\Portfolio.Dotnet.Identity.Users.Data\Portfolio.Dotnet.Identity.Users.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>

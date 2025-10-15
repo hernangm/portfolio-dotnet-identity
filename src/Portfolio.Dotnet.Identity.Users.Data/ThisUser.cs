@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Globalization;
 
-namespace Portfolio.Dotnet.Identity.Data
+namespace Portfolio.Dotnet.Identity.Users.Data
 {
     public class ThisUser : IdentityUser<int>
     {

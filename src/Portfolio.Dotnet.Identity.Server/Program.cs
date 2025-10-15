@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationM
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
-using Portfolio.Dotnet.Identity.Data;
 using Portfolio.Dotnet.Identity.Email.Registration;
 using Portfolio.Dotnet.Identity.Server.Config;
 using Portfolio.Dotnet.Identity.Server.Infra;
 using Portfolio.Dotnet.Identity.Server.Init;
+using Portfolio.Dotnet.Identity.Users.Data.Infra;
 
 internal class Program
 {
@@ -57,7 +57,7 @@ internal class Program
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new NullReferenceException("connectionString");
         void configureAction(IServiceProvider provider, DbContextOptionsBuilder builder)
         {
-            builder.ConfigureIdentityDataContext(connectionString, applicationSettings.IsProduction());
+            builder.ConfigureDataContext(connectionString, applicationSettings.IsProduction());
         }
 
         //builder.Services.RegisterApplications(applicationSettings);

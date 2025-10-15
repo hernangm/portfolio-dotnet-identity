@@ -1,10 +1,10 @@
 ﻿using Duende.IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Portfolio.Dotnet.Identity.Data;
 using Portfolio.Dotnet.Identity.Server.Config;
 using Portfolio.Dotnet.Identity.Server.Infra;
 using Portfolio.Dotnet.Identity.Users;
+using Portfolio.Dotnet.Identity.Users.Data;
 
 namespace Portfolio.Dotnet.Identity.Server.Init
 {

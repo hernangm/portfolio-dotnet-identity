@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Portfolio.Dotnet.Identity.Data
+namespace Portfolio.Dotnet.Identity.Users.Data
 {
-    public class ThisUserClaim : IdentityUserClaim<int>
+    public class ThisUserLogin : IdentityUserLogin<int>
     {
         public virtual ThisUser User { get; set; } = null!;
     }

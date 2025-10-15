@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace Portfolio.Dotnet.Identity.Data
+namespace Portfolio.Dotnet.Identity.Users.Data.Infra
 {
     public static class DatabaseConfigurationUtilities
     {
-        public static DbContextOptionsBuilder ConfigureIdentityDataContext(this DbContextOptionsBuilder builder, string? connectionString, bool isProduction)
+        public static DbContextOptionsBuilder ConfigureDataContext(this DbContextOptionsBuilder builder, string? connectionString, bool isProduction)
         {
             if (string.IsNullOrEmpty(connectionString))
             {

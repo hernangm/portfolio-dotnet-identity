@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Portfolio.Dotnet.Identity.Data;
 using Portfolio.Dotnet.Identity.Email;
 using Portfolio.Dotnet.Identity.Email.Contracts;
 using Portfolio.Dotnet.Identity.Email.Emails.ResetPassword;
 using Portfolio.Dotnet.Identity.Users.Contracts;
+using Portfolio.Dotnet.Identity.Users.Data;
 using Portfolio.Dotnet.Identity.Users.Models;
 using Portfolio.Dotnet.Identity.Users.Models.Requests;
 using Portfolio.Dotnet.Identity.Users.Models.Responses;

@@ -206,7 +206,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Portfolio.Dotnet.Identity.Data\Portfolio.Dotnet.Identity.Data.csproj" />
     <ProjectReference Include="..\Portfolio.Dotnet.Identity.Email\Portfolio.Dotnet.Identity.Email.csproj" />
     <ProjectReference Include="..\Portfolio.Dotnet.Identity.Users\Portfolio.Dotnet.Identity.Users.csproj" />
   </ItemGroup>
