@@ -28,6 +28,11 @@ jobs:
     environment: Production
     
     steps:
+      - name: Print Environment Name
+        run: |
+          echo "ENVIRONMENT_NAME=${{ environment.name }}" >> $GITHUB_ENV
+          echo "Environment name: $ENVIRONMENT_NAME"
+
       - uses: actions/checkout@v4
 
       - name: Setup .NET
