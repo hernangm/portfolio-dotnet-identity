@@ -25,6 +25,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: Production
     
     steps:
       - uses: actions/checkout@v4
@@ -69,8 +70,6 @@ jobs:
         run: | 
             dotnet tool install --global dotnet-ef 
             dotnet ef migrations bundle --project ${{ env.DATA_PROJECT_PATH }} --output ${{ env.EF_BUNDLE_ARTIFACT_PATH }} --context  ${{ env.DATA_CONTEXT_NAME }} --self-contained -r linux-x64 --verbose --connection ${{ secrets.DB_SERVER_CONNECTION }}
-        env:
-          ASPNETCORE_ENVIRONMENT: Production
       
       - name: Upload EF Artifact
         uses: actions/upload-artifact@v4
