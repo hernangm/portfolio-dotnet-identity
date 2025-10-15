@@ -97,11 +97,11 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Download API artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: webapp
-          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      # - name: Download API artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: webapp
+      #     path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
       - name: Download EF Bundle artifact
         uses: actions/download-artifact@v4
@@ -109,25 +109,22 @@ jobs:
           name: efbundle
           path: ${{ env.EF_BUNDLE_ARTIFACT_PATH }}
 
-      - name: Make ef-bundle-artifact executable
-        run: chmod +x ./ef-bundle-artifact/ef-bundle-artifact
-
       - name: Run EF Migration Bundle
         run: |
-            echo "CONNSTR=${{ env.CONNSTR }}" >> $GITHUB_ENV
-            ${{ env.EF_BUNDLE_ARTIFACT_PATH }}/ef-bundle-artifact --verbose
+            chmod +x ${{ env.EF_BUNDLE_ARTIFACT_PATH }}/ef-bundle-artifact
+            ${{ env.EF_BUNDLE_ARTIFACT_PATH }}/ef-bundle-artifact --verbose --connection ${{ secrets.DB_SERVER_CONNECTION }}}}
         env:
             CONNSTR: ${{ secrets.DB_SQLSERVER_CONNECTION }}
 
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-        env:
-          ASPNETCORE_ENVIRONMENT: Production
+      # - name: Deploy to Azure Web App
+      #   id: deploy-to-webapp
+      #   uses: azure/webapps-deploy@v2
+      #   with:
+      #     app-name: ${{ env.AZURE_WEBAPP_NAME }}
+      #     publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+      #     package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      #   env:
+      #     ASPNETCORE_ENVIRONMENT: Production
 
   smoke_test:
     runs-on: ubuntu-latest
