@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D9717604-C3A5-445F-8B72-1B7632D72EE7}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portfolio.Dotnet.Identity.Email", "Portfolio.Dotnet.Identity.Email\Portfolio.Dotnet.Identity.Email.csproj", "{2FC3CAE4-96D3-4BD4-9256-CAB28CD8C8BC}"

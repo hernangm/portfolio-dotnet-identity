@@ -11,11 +11,11 @@ namespace Portfolio.Dotnet.Identity.Data
         {
             base.OnModelCreating(builder);
             var userConfiguration = builder.Entity<ThisUser>();
-            userConfiguration.ToTable("Users", SCHEMA, tb => tb.UseSqlOutputClause(false));
+            userConfiguration.ToTable("Users", SCHEMA);
             userConfiguration.Property(m => m.PhoneNumber).IsRequired(false);
 
             builder.Entity<ThisRole>().ToTable("Roles", SCHEMA);
-            builder.Entity<ThisUserClaim>().ToTable("UserClaims", SCHEMA, tb => tb.UseSqlOutputClause(false))
+            builder.Entity<ThisUserClaim>().ToTable("UserClaims", SCHEMA)
                 .HasOne(uc => uc.User)
                 .WithMany(u => u.UserClaims)
                 .HasForeignKey(uc => uc.UserId);

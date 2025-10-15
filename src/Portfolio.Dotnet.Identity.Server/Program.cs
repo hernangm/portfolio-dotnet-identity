@@ -56,7 +56,7 @@ internal class Program
 
         var applicationSettings = builder.Services.RegisterApplicationSettings<ApplicationSettings>(builder.Configuration);
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new NullReferenceException("connectionString");
-        var configureAction = RegisterDataContextExtensions.ConfigureSqlServer(Assembly.GetExecutingAssembly().GetName().Name, connectionString, applicationSettings.IsProduction());
+        var configureAction = DatabaseConfigurationUtilities.ConfigureDatabase(Assembly.GetExecutingAssembly().GetName().Name, connectionString, applicationSettings.IsProduction());
 
         //builder.Services.RegisterApplications(applicationSettings);
         builder.Services.RegisterAuthentication(applicationSettings.ExternalIdentityProviders);

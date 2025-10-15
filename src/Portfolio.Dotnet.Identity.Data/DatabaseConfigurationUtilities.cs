@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Portfolio.Dotnet.Identity.Data
 {
-    public static class RegisterDataContextExtensions
+    public static class DatabaseConfigurationUtilities
     {
-        public static Action<IServiceProvider, DbContextOptionsBuilder> ConfigureSqlServer(string? assemblyName, string connectionString, bool isProduction)
+        public static Action<IServiceProvider, DbContextOptionsBuilder> ConfigureDatabase(string? assemblyName, string connectionString, bool isProduction)
         {
             void b(IServiceProvider provider, DbContextOptionsBuilder builder)
             {
-                builder.UseSqlServer(connectionString, sqlOptions =>
+                builder.UseNpgsql(connectionString, sqlOptions =>
                 {
                     sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
                     sqlOptions.MigrationsAssembly(assemblyName);

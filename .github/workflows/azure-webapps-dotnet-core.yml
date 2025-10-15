@@ -5,7 +5,7 @@ env:
   AZURE_WEBAPP_PACKAGE_PATH: './src/Portfolio.Dotnet.Identity.Server/publish'
   DOTNET_VERSION: '9.x'
   SOLUTION_PATH: './src/Portfolio.Dotnet.Identity.sln'
-  API_PROJECT_PATH: './src/Portfolio.Dotnet.Identity/Portfolio.Dotnet.Identity.Server.csproj'
+  API_PROJECT_PATH: './src/Portfolio.Dotnet.Identity.Server/Portfolio.Dotnet.Identity.Server.csproj'
   PUBLISH_DIR: './publish'
   SMOKE_TEST_PROJECT_PATH: './src/Portfolio.Dotnet.Identity.Server.Tests/Portfolio.Dotnet.Identity.Server.Tests.csproj'
   TEST_ARTIFACT_PATH: './test-artifact'
