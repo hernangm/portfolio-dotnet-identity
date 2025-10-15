@@ -5,13 +5,20 @@ namespace Portfolio.Dotnet.Identity.Data
 {
     public static class DatabaseConfigurationUtilities
     {
-        public static DbContextOptionsBuilder ConfigureIdentityDataContext(this DbContextOptionsBuilder builder, string connectionString, bool isProduction)
+        public static DbContextOptionsBuilder ConfigureIdentityDataContext(this DbContextOptionsBuilder builder, string? connectionString, bool isProduction)
         {
-            builder.UseNpgsql(connectionString, sqlOptions =>
+            if (string.IsNullOrEmpty(connectionString))
             {
-                sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
-                sqlOptions.EnableRetryOnFailure();
-            });
+                builder.UseNpgsql();
+            }
+            else
+            {
+                builder.UseNpgsql(connectionString, sqlOptions =>
+                {
+                    sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                    sqlOptions.EnableRetryOnFailure();
+                });
+            }
             builder.ConfigureWarnings(w =>
                 {
                     if (isProduction)
