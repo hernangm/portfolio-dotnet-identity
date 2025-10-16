@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Portfolio.Dotnet.Identity.Data.Users;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace Portfolio.Dotnet.Identity.Data.Factories
 {
-    public abstract class DesignTimeDbContextFactoryBase
+    public abstract class DesignTimeDbContextFactoryBase<TDbContext> : IDesignTimeDbContextFactory<TDbContext>
+        where TDbContext : DbContext
     {
-        public ThisIdentityDbContext CreateDbContext(string[] args)
+        public TDbContext CreateDbContext(string[] args)
         {
             var connectionString = string.Empty;
             var connectionArgIndex = Array.IndexOf(args, "--connection");
@@ -13,9 +14,9 @@ namespace Portfolio.Dotnet.Identity.Data.Factories
             {
                 connectionString = args[connectionArgIndex + 1];
             }
-            var optionsBuilder = new DbContextOptionsBuilder<ThisIdentityDbContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<TDbContext>();
             optionsBuilder.ConfigureDataContext(connectionString, false);
-            return new ThisIdentityDbContext(optionsBuilder.Options);
+            return (TDbContext)Activator.CreateInstance(typeof(TDbContext), optionsBuilder.Options)!;
         }
     }
 }
