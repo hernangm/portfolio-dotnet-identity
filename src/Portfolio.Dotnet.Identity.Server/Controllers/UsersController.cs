@@ -14,19 +14,27 @@ namespace Portfolio.Dotnet.Identity.Server.Controllers
         private readonly IPasswordGeneratorService PasswordGeneratorService = passwordGeneratorService;
 
         [HttpPost("{userName}/claims")]
-        public async Task<UsersOperationResponse> AddOrUpdateClaims(string userName, [FromBody] AddOrUpdateClaimsRequest request)
+        public async Task<ActionResult<UsersOperationResponse>> AddOrUpdateClaims(string userName, [FromBody] AddOrUpdateClaimsRequest request)
         {
             request.UserName = userName;
             var response = await UserService.AddOrUpdateClaims(request);
-            return response;
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
         }
 
         [HttpDelete("{userName}/claims")]
-        public async Task<UsersOperationResponse> RemoveClaims(string userName, [FromBody] RemoveClaimsRequest request)
+        public async Task<ActionResult<UsersOperationResponse>> RemoveClaims(string userName, [FromBody] RemoveClaimsRequest request)
         {
             request.UserName = userName;
             var response = await UserService.RemoveClaims(request);
-            return response;
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
         }
 
 
@@ -39,23 +47,27 @@ namespace Portfolio.Dotnet.Identity.Server.Controllers
 
 
         [HttpGet("userName/{userName}")]
-        public async Task<UserDTO?> GetUserByUserName(string userName)
+        public async Task<ActionResult<UserDTO>> GetUserByUserName(string userName)
         {
-            var response = await UserService.GetUserByUserName(userName);
-            return response;
+            var user = await UserService.GetUserByUserName(userName);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return user; // Framework implicitly returns Ok(user)
         }
 
 
         [HttpGet("")]
-        public async Task<IEnumerable<UserDTO>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
         {
             var users = await UserService.GetUsers();
-            return users;
+            return Ok(users);
         }
 
 
         [HttpGet("userName/{userName}/exists")]
-        public bool UserNameExists(string userName)
+        public ActionResult<bool> UserNameExists(string userName)
         {
             var exists = UserService.UserNameExists(userName);
             return exists;
@@ -63,7 +75,7 @@ namespace Portfolio.Dotnet.Identity.Server.Controllers
 
 
         [HttpGet("password")]
-        public GeneratePasswordResponse GeneratePassword()
+        public ActionResult<GeneratePasswordResponse> GeneratePassword()
         {
             var password = PasswordGeneratorService.GeneratePassword();
             return new GeneratePasswordResponse { Password = password };

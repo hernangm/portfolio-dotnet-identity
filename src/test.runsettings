@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat Code Coverage">
+        <Configuration>
+          <ExcludeByFile>
+            <File>**/*.cshtml</File>
+            <File>**/*.g.cs</File>
+            <File>**/AspNetCoreGeneratedDocument.Views_*</File>
+          </ExcludeByFile>
+          <Exclude>
+            <Class>*.*DTO</Class>
+            <Class>*.*Request</Class>
+            <Class>*.*Response</Class>
+          </Exclude>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>

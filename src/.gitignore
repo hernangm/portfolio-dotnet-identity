@@ -57,3 +57,4 @@ nunit-*.xml
 *.user
 appsettings.*.json
 *.jwk
+/coveragereport

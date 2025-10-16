@@ -19,11 +19,25 @@ namespace Portfolio.Dotnet.Identity.Configuration.Tests
 
 
         [TestMethod]
-        public void HashPassword()
+        public void PasswordHasher_Should_Verify_Correct_Password()
         {
+            // Arrange
             var passwordHasher = new PasswordHasher<ThisUser>();
-            var hashedPassword = passwordHasher.HashPassword(new ThisUser(), "password12344");
-            Assert.AreEqual("AKMFMgLV1bVKsKT/Iu2Jq5SrcEbkNglUBpzZBH4GKW5Kf6tEjR75vrBJAYfNYhoI1Q==", hashedPassword);
+            var user = new ThisUser();
+            var password = "password12344";
+            var wrongPassword = "password56789";
+
+            // Act
+            var hashedPassword = passwordHasher.HashPassword(user, password);
+
+            // Assert
+            // Verify that the correct password succeeds
+            var correctPasswordResult = passwordHasher.VerifyHashedPassword(user, hashedPassword, password);
+            Assert.AreEqual(PasswordVerificationResult.Success, correctPasswordResult);
+
+            // Verify that an incorrect password fails
+            var wrongPasswordResult = passwordHasher.VerifyHashedPassword(user, hashedPassword, wrongPassword);
+            Assert.AreEqual(PasswordVerificationResult.Failed, wrongPasswordResult);
         }
     }
 }

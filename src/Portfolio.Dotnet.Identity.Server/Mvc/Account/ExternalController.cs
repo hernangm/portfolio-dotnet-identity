@@ -35,7 +35,7 @@ namespace Portfolio.Dotnet.Identity.Server.Mvc.Account
         /// initiate roundtrip to external authentication provider
         /// </summary>
         [HttpGet]
-        public IActionResult Challenge(string scheme, string returnUrl)
+        public ChallengeResult Challenge(string scheme, string returnUrl)
         {
             if (string.IsNullOrEmpty(returnUrl))
             {
@@ -61,7 +61,6 @@ namespace Portfolio.Dotnet.Identity.Server.Mvc.Account
             };
 
             return Challenge(props, scheme);
-
         }
 
         /// <summary>
