@@ -14,7 +14,6 @@ namespace Portfolio.Dotnet.Identity.Server.Infra
                 return false;
             }
             return uris.Any(item => Regex.IsMatch(requestedUri, item, RegexOptions.IgnoreCase));
-            //return uris.Contains(requestedUri, StringComparer.OrdinalIgnoreCase);
         }
 
 

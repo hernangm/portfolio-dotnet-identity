@@ -43,8 +43,7 @@
     <None Remove="Services\**" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Init\ApplicationRegistrationExtensions.cs" />
-    <Compile Remove="Init\MigrationBuilderExtensions.cs" />
+    <Compile Remove="Controllers\HealthController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Views\Account\AccessDenied.cshtml" />
@@ -199,16 +198,21 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
-    <PackageReference Include="AspNetCore.HealthChecks.Network" Version="9.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.Network" Version="9.0.0">
+      <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
     <PackageReference Include="Cnblogs.IdentityServer4.AspNetIdentity" Version="4.3.0" />
     <PackageReference Include="Cnblogs.IdentityServer4.EntityFramework" Version="4.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="9.0.10" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="9.0.10" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
-    <PackageReference Include="starkbank-ecdsa" Version="1.3.3" />
+    <PackageReference Include="starkbank-ecdsa" Version="1.3.3">
+      <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Portfolio.Dotnet.Identity.Data\Portfolio.Dotnet.Identity.Data.csproj" />
     <ProjectReference Include="..\Portfolio.Dotnet.Identity.Email\Portfolio.Dotnet.Identity.Email.csproj" />
     <ProjectReference Include="..\Portfolio.Dotnet.Identity.Users\Portfolio.Dotnet.Identity.Users.csproj" />
   </ItemGroup>

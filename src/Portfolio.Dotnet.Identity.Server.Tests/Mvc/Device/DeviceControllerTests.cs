@@ -2,7 +2,6 @@ using IdentityServer4.Configuration;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using Portfolio.Dotnet.Identity.Server.Mvc.Device;

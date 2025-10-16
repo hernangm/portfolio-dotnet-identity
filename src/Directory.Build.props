@@ -3,7 +3,7 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
-  <Target Name="FormatDocument" BeforeTargets="Build">
+  <Target Name="FormatDocument" BeforeTargets="Rebuild">
     <Exec Command="dotnet format" />
   </Target>
 

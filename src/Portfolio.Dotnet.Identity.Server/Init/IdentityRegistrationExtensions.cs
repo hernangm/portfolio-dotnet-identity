@@ -2,6 +2,7 @@
 using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Portfolio.Dotnet.Identity.Data;
 using Portfolio.Dotnet.Identity.Server.Config;
 using Portfolio.Dotnet.Identity.Server.Infra;
 using Portfolio.Dotnet.Identity.Users;
@@ -11,9 +12,21 @@ namespace Portfolio.Dotnet.Identity.Server.Init
 {
     public static class IdentityRegistrationExtensions
     {
-        public static void RegisterIdentity(this IServiceCollection services, ApplicationSettings applicationSettings, Action<IServiceProvider, DbContextOptionsBuilder> resolveDbContextOptions)
+        public static void RegisterIdentityServer(this IServiceCollection services, ApplicationSettings applicationSettings, Action<DbContextOptionsBuilder> configureDbContextOptions)
         {
-            services.AddDbContext<ThisIdentityDbContext>(resolveDbContextOptions);
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.ClaimsIdentity.UserIdClaimType = JwtClaimTypes.Subject;
+                options.ClaimsIdentity.UserNameClaimType = JwtClaimTypes.Name;
+                options.ClaimsIdentity.RoleClaimType = JwtClaimTypes.Role;
+            });
+
+            services.AddScoped(sp =>
+            {
+                return new DbContextOptions<ConfigurationDbContext>();
+            });
+            services.AddDbContext<ThisIdentityDbContext>(configureDbContextOptions);
+
             services.AddIdentity<ThisUser, ThisRole>(o =>
             {
                 o.Password.RequireDigit = applicationSettings.PasswordPolicy.RequireDigit;
@@ -25,20 +38,10 @@ namespace Portfolio.Dotnet.Identity.Server.Init
             })
             .AddEntityFrameworkStores<ThisIdentityDbContext>()
             .AddDefaultTokenProviders();
-            services.RegisterUsersServices(applicationSettings.PasswordPolicy);
-        }
 
-        public static void RegisterIdentityServer(this IServiceCollection services, string applicationSettingsIssuerUrl, Action<IServiceProvider, DbContextOptionsBuilder> resolveDbContextOptions)
-        {
-            services.Configure<IdentityOptions>(options =>
-            {
-                options.ClaimsIdentity.UserIdClaimType = JwtClaimTypes.Subject;
-                options.ClaimsIdentity.UserNameClaimType = JwtClaimTypes.Name;
-                options.ClaimsIdentity.RoleClaimType = JwtClaimTypes.Role;
-            });
             services.AddIdentityServer(options =>
             {
-                options.IssuerUri = applicationSettingsIssuerUrl;
+                options.IssuerUri = applicationSettings.IssuerUrl;
                 options.Events.RaiseErrorEvents = true;
                 options.Events.RaiseInformationEvents = true;
                 options.Events.RaiseFailureEvents = true;
@@ -48,17 +51,16 @@ namespace Portfolio.Dotnet.Identity.Server.Init
             })
                 .AddConfigurationStore(options =>
                 {
-                    options.ResolveDbContextOptions = resolveDbContextOptions;
+                    options.ConfigureDbContext = configureDbContextOptions;
                 })
                 .AddOperationalStore(options =>
                 {
-                    options.ResolveDbContextOptions = resolveDbContextOptions;
+                    options.ConfigureDbContext = configureDbContextOptions;
                 })
                 .AddDeveloperSigningCredential()
                 .AddAspNetIdentity<ThisUser>()
                 .AddProfileService<ProfileService>()
                 .AddRedirectUriValidator<RegexRedirectUriValidator>();
-
         }
     }
 }

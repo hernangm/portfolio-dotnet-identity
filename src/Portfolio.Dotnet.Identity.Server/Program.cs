@@ -9,6 +9,7 @@ using Portfolio.Dotnet.Identity.Email.Registration;
 using Portfolio.Dotnet.Identity.Server.Config;
 using Portfolio.Dotnet.Identity.Server.Infra;
 using Portfolio.Dotnet.Identity.Server.Init;
+using Portfolio.Dotnet.Identity.Users;
 using Portfolio.Dotnet.Identity.Users.Data.Infra;
 
 internal class Program
@@ -18,9 +19,9 @@ internal class Program
         const string AllowAllOrigins = "AllowAllOrigins";
         const string Version = "v1";
         var AppId = typeof(Program).Namespace!;
-
         var builder = WebApplication.CreateBuilder(args);
         var applicationSettings = builder.Services.RegisterApplicationSettings<ApplicationSettings>(builder.Configuration);
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new NullReferenceException("connectionString");
 
         builder.Services.AddRazorPages();
         builder.Services.AddHealthChecks().RegisterHealthChecks(applicationSettings);
@@ -54,31 +55,22 @@ internal class Program
             };
         });
 
-        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new NullReferenceException("connectionString");
-        void configureAction(IServiceProvider provider, DbContextOptionsBuilder builder)
-        {
-            builder.ConfigureDataContext(connectionString, applicationSettings.IsProduction());
-        }
-
-        //builder.Services.RegisterApplications(applicationSettings);
         builder.Services.RegisterAuthentication(applicationSettings.ExternalIdentityProviders);
-        builder.Services.RegisterIdentity(applicationSettings, configureAction);
-        builder.Services.RegisterIdentityServer(applicationSettings.IssuerUrl ?? string.Empty, configureAction);
-        builder.Services.RegisterEmail(applicationSettings.Email, new Uri(AppDomain.CurrentDomain.BaseDirectory).AbsolutePath, applicationSettings.Environment, applicationSettings.IsProduction());
+        builder.Services.RegisterIdentityServer(applicationSettings, builder => builder.ConfigureDataContext(connectionString, applicationSettings.IsProduction()));
+        builder.Services.RegisterUsersServices(applicationSettings.PasswordPolicy);
+        builder.Services.RegisterEmailServices(applicationSettings.Email, new Uri(AppDomain.CurrentDomain.BaseDirectory).AbsolutePath, applicationSettings.Environment, applicationSettings.IsProduction());
 
 
         var app = builder.Build();
-
         if (builder.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
             IdentityModelEventSource.ShowPII = true;
         }
-
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseRouting();
-        app.MapHealthChecks("/health"); // Map the health check endpoint
+        app.MapHealthChecks("/health");
         app.UseCors(AllowAllOrigins);
         app.UseAuthentication();
         app.UseAuthorization();
@@ -94,8 +86,6 @@ internal class Program
             Secure = CookieSecurePolicy.Always,
             MinimumSameSitePolicy = SameSiteMode.Unspecified
         });
-
-
         //app.Use(async (ctx, next) =>
         //{
         //    if (!string.IsNullOrEmpty(resolvedAppSettings.IssuerUrl))
@@ -104,11 +94,6 @@ internal class Program
         //    }
         //    await next();
         //});
-
-
-
-
         app.Run();
-
     }
 }

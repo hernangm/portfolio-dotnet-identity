@@ -31,10 +31,8 @@ namespace Portfolio.Dotnet.Identity.Server.Tests.Mvc.Account
             _mockSchemeProvider = new Mock<IAuthenticationSchemeProvider>();
             _mockEventService = new Mock<IEventService>();
 
-            // 1. Create a mock for IUserStore
             var mockUserStore = new Mock<IUserStore<ThisUser>>();
 
-            // 2. Instantiate UserManager with its mocked dependencies
             var _userManager = new UserManager<ThisUser>(
                 mockUserStore.Object,
                 new Mock<IOptions<IdentityOptions>>().Object,
@@ -46,7 +44,6 @@ namespace Portfolio.Dotnet.Identity.Server.Tests.Mvc.Account
                 new Mock<IServiceProvider>().Object,
                 new Mock<ILogger<UserManager<ThisUser>>>().Object);
 
-            // 3. Instantiate SignInManager with its mocked dependencies
             var _signInManager = new SignInManager<ThisUser>(
                 _userManager,
                 new Mock<IHttpContextAccessor>().Object,

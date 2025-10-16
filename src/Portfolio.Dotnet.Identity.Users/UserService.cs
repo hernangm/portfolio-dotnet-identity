@@ -286,16 +286,6 @@ namespace Portfolio.Dotnet.Identity.Users
             return result;
         }
 
-        //public async Task<UserDTO?> GetUserById(int id)
-        //{
-        //    var user = await GetUser(null, id);
-        //    if (user != null)
-        //    {
-        //        return MapUserDTO(user);
-        //    }
-        //    return null;
-        //}
-
         public async Task<UserDTO?> GetUserByUserName(string userName)
         {
             var user = await GetUser(userName);

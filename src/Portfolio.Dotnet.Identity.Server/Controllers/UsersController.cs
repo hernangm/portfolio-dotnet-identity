@@ -38,14 +38,6 @@ namespace Portfolio.Dotnet.Identity.Server.Controllers
         }
 
 
-        //[HttpGet("id/{id:int}")]
-        //public async Task<UserDTO?> GetUserById(int id)
-        //{
-        //    var response = await UserService.GetUserById(id);
-        //    return response;
-        //}
-
-
         [HttpGet("userName/{userName}")]
         public async Task<ActionResult<UserDTO>> GetUserByUserName(string userName)
         {
@@ -54,7 +46,7 @@ namespace Portfolio.Dotnet.Identity.Server.Controllers
             {
                 return NotFound();
             }
-            return user; // Framework implicitly returns Ok(user)
+            return user;
         }
 
 

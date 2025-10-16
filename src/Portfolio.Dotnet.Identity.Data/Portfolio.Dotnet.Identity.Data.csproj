@@ -7,11 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="POCRegistration.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Portfolio.Dotnet.Identity.Users.Data\Portfolio.Dotnet.Identity.Users.Data.csproj" />
+    <PackageReference Include="Cnblogs.IdentityServer4" Version="4.3.0" />
+    <PackageReference Include="Cnblogs.IdentityServer4.EntityFramework.Storage" Version="4.3.0" />
   </ItemGroup>
 
 </Project>

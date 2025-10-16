@@ -6,7 +6,7 @@ namespace Portfolio.Dotnet.Identity.Email.Registration
 {
     public static class ServiceCollectionExtensions
     {
-        public static void RegisterEmail(this IServiceCollection services, EmailSettings emailSettings, string basePath, string environment, bool isProduction)
+        public static void RegisterEmailServices(this IServiceCollection services, EmailSettings emailSettings, string basePath, string environment, bool isProduction)
         {
             var a = services.AddFluentEmail(emailSettings.From)
                 .AddRazorRenderer(basePath)
