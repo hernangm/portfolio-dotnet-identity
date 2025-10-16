@@ -1,14 +1,12 @@
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Portfolio.Dotnet.Identity.Server.Mvc.Account;
 using Portfolio.Dotnet.Identity.Users.Contracts;
-using Portfolio.Dotnet.Identity.Users.Data;
 
 namespace Portfolio.Dotnet.Identity.Server.Tests.Mvc.Account
 {
@@ -39,6 +37,12 @@ namespace Portfolio.Dotnet.Identity.Server.Tests.Mvc.Account
                 _mockLogger.Object,
                 _mockEnvironment.Object,
                 _mockUserService.Object);
+
+            var mockUrlHelper = new Mock<IUrlHelper>();
+            mockUrlHelper
+                .Setup(x => x.Action(It.IsAny<UrlActionContext>()))
+                .Returns("http://localhost/callback");
+            _controller.Url = mockUrlHelper.Object;
         }
 
         [TestMethod]
@@ -47,6 +51,7 @@ namespace Portfolio.Dotnet.Identity.Server.Tests.Mvc.Account
             // Arrange
             var scheme = "Google";
             var returnUrl = "http://localhost:5000";
+            _mockInteractionService.Setup(x => x.IsValidReturnUrl(returnUrl)).Returns(true);
 
             // Act
             var result = _controller.Challenge(scheme, returnUrl);

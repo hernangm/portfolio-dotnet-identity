@@ -1,5 +1,6 @@
 using IdentityServer4.Configuration;
 using IdentityServer4.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -26,7 +27,13 @@ namespace Portfolio.Dotnet.Identity.Server.Tests.Mvc.Device
             _controller = new DeviceController(
                 _mockInteractionService.Object,
                 _mockEventService.Object,
-                _mockOptions.Object);
+                _mockOptions.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                }
+            };
         }
 
         [TestMethod]

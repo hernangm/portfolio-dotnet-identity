@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using Portfolio.Dotnet.Identity.Server.Mvc.Account;
 using Portfolio.Dotnet.Identity.Users.Contracts;
@@ -19,7 +21,6 @@ namespace Portfolio.Dotnet.Identity.Server.Tests.Mvc.Account
         private readonly Mock<IClientStore> _mockClientStore;
         private readonly Mock<IAuthenticationSchemeProvider> _mockSchemeProvider;
         private readonly Mock<IEventService> _mockEventService;
-        private readonly Mock<SignInManager<ThisUser>> _mockSignInManager;
         private readonly AccountController _controller;
 
         public AccountControllerTests()
@@ -29,10 +30,31 @@ namespace Portfolio.Dotnet.Identity.Server.Tests.Mvc.Account
             _mockClientStore = new Mock<IClientStore>();
             _mockSchemeProvider = new Mock<IAuthenticationSchemeProvider>();
             _mockEventService = new Mock<IEventService>();
-            _mockSignInManager = new Mock<SignInManager<ThisUser>>(
-                new Mock<UserManager<ThisUser>>().Object,
+
+            // 1. Create a mock for IUserStore
+            var mockUserStore = new Mock<IUserStore<ThisUser>>();
+
+            // 2. Instantiate UserManager with its mocked dependencies
+            var _userManager = new UserManager<ThisUser>(
+                mockUserStore.Object,
+                new Mock<IOptions<IdentityOptions>>().Object,
+                new Mock<IPasswordHasher<ThisUser>>().Object,
+                [],
+                [],
+                new Mock<ILookupNormalizer>().Object,
+                new Mock<IdentityErrorDescriber>().Object,
+                new Mock<IServiceProvider>().Object,
+                new Mock<ILogger<UserManager<ThisUser>>>().Object);
+
+            // 3. Instantiate SignInManager with its mocked dependencies
+            var _signInManager = new SignInManager<ThisUser>(
+                _userManager,
                 new Mock<IHttpContextAccessor>().Object,
-                new Mock<IUserClaimsPrincipalFactory<ThisUser>>().Object);
+                new Mock<IUserClaimsPrincipalFactory<ThisUser>>().Object,
+                new Mock<IOptions<IdentityOptions>>().Object,
+                new Mock<ILogger<SignInManager<ThisUser>>>().Object,
+                _mockSchemeProvider.Object,
+                new Mock<IUserConfirmation<ThisUser>>().Object);
 
             _controller = new AccountController(
                 _mockUserService.Object,
@@ -40,7 +62,7 @@ namespace Portfolio.Dotnet.Identity.Server.Tests.Mvc.Account
                 _mockClientStore.Object,
                 _mockSchemeProvider.Object,
                 _mockEventService.Object,
-                _mockSignInManager.Object);
+                _signInManager);
         }
 
         [TestMethod]
