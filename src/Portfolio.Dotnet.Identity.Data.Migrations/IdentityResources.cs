@@ -1,6 +1,6 @@
 ﻿using IdentityServer4.Models;
 
-namespace Portfolio.Dotnet.Identity.Configuration
+namespace Portfolio.Dotnet.Identity.Data.Migrations
 {
     public static class IdentityResources
     {

@@ -20,9 +20,10 @@ internal class Program
         var AppId = typeof(Program).Namespace!;
 
         var builder = WebApplication.CreateBuilder(args);
+        var applicationSettings = builder.Services.RegisterApplicationSettings<ApplicationSettings>(builder.Configuration);
 
         builder.Services.AddRazorPages();
-        builder.Services.AddHealthChecks().RegisterHealthChecks();
+        builder.Services.AddHealthChecks().RegisterHealthChecks(applicationSettings);
 
         builder.Services.AddDataProtection()
             .UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration
@@ -53,7 +54,6 @@ internal class Program
             };
         });
 
-        var applicationSettings = builder.Services.RegisterApplicationSettings<ApplicationSettings>(builder.Configuration);
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new NullReferenceException("connectionString");
         void configureAction(IServiceProvider provider, DbContextOptionsBuilder builder)
         {

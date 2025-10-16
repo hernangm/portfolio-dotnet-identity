@@ -7,6 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="MigrationBuilderExtensions.cs" />
+    <Compile Remove="POCRegistration.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Cnblogs.IdentityServer4" Version="4.3.0" />
+    <PackageReference Include="Cnblogs.IdentityServer4.EntityFramework.Storage" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Portfolio.Dotnet.Identity.Users.Data\Portfolio.Dotnet.Identity.Users.Data.csproj" />
   </ItemGroup>
 

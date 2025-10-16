@@ -1,15 +1,15 @@
 ﻿using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.EntityFrameworkCore;
+using Portfolio.Dotnet.Identity.Configuration;
+using Portfolio.Dotnet.Identity.Configuration.Utils;
 
-namespace Portfolio.Dotnet.Identity.Server.Init
+namespace Portfolio.Dotnet.Identity.Data.Migrations
 {
     internal static class MigrationBuilderExtensions
     {
-        public static void InitializeDatabase(this IApplicationBuilder app, ApplicationScannerResults applications)
+        public static void InitializeDatabase(ApplicationScannerResults applications)
         {
-            using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
-
             serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
 
             var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
