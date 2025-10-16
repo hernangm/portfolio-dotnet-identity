@@ -4,7 +4,7 @@ using System;
 
 #nullable disable
 
-namespace Portfolio.Dotnet.Identity.Users.Data.Migrations
+namespace Portfolio.Dotnet.Identity.Data.Migrations
 {
     /// <inheritdoc />
     public partial class InitialMigration : Migration

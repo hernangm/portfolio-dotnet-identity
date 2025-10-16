@@ -1,5 +1,5 @@
-﻿using Portfolio.Dotnet.Identity.Server.Config;
-using Portfolio.Dotnet.Identity.Users.Data;
+﻿using Portfolio.Dotnet.Identity.Data.Users;
+using Portfolio.Dotnet.Identity.Server.Config;
 
 namespace Portfolio.Dotnet.Identity.Server.Init
 {

@@ -6,7 +6,7 @@ using IdentityServer4.EntityFramework.Options;
 using IdentityServer4.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Portfolio.Dotnet.Identity.Data
+namespace Portfolio.Dotnet.Identity.Data.Configuration
 {
     public class ThisConfigurationDbContext(DbContextOptions<ConfigurationDbContext> options, ConfigurationStoreOptions storeOptions) : ConfigurationDbContext(options, storeOptions)
     {

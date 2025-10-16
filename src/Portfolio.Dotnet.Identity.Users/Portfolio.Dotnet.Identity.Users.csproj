@@ -11,12 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Portfolio.Dotnet.Identity.Email\Portfolio.Dotnet.Identity.Email.csproj" />
-    <ProjectReference Include="..\Portfolio.Dotnet.Identity.Users.Data\Portfolio.Dotnet.Identity.Users.Data.csproj" />
+    <PackageReference Include="Cnblogs.IdentityServer4" Version="4.3.0" />
+    <PackageReference Include="PasswordGenerator" Version="2.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cnblogs.IdentityServer4" Version="4.3.0" />
-    <PackageReference Include="PasswordGenerator" Version="2.1.0" />
+    <ProjectReference Include="..\Portfolio.Dotnet.Identity.Data\Portfolio.Dotnet.Identity.Data.csproj" />
   </ItemGroup>
 </Project>

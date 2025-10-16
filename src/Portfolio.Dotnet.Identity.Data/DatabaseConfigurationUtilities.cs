@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace Portfolio.Dotnet.Identity.Users.Data.Infra
+namespace Portfolio.Dotnet.Identity.Data
 {
     public static class DatabaseConfigurationUtilities
     {

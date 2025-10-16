@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
+using Portfolio.Dotnet.Identity.Data.Users;
 using Portfolio.Dotnet.Identity.Server.Mvc.Account;
 using Portfolio.Dotnet.Identity.Users.Contracts;
-using Portfolio.Dotnet.Identity.Users.Data;
 
 namespace Portfolio.Dotnet.Identity.Server.Tests.Mvc.Account
 {

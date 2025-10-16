@@ -2,11 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Portfolio.Dotnet.Identity.Email;
-using Portfolio.Dotnet.Identity.Email.Contracts;
-using Portfolio.Dotnet.Identity.Email.Emails.ResetPassword;
+using Portfolio.Dotnet.Identity.Data.Users;
 using Portfolio.Dotnet.Identity.Users.Contracts;
-using Portfolio.Dotnet.Identity.Users.Data;
 using Portfolio.Dotnet.Identity.Users.Models;
 using Portfolio.Dotnet.Identity.Users.Models.Requests;
 using Portfolio.Dotnet.Identity.Users.Models.Responses;
@@ -18,12 +15,10 @@ namespace Portfolio.Dotnet.Identity.Users
 {
     public class UserService(
               UserManager<ThisUser> userManager
-            , IEmailSender emailSender
             , IPasswordGeneratorService passwordGenerator
             , ILoggerFactory loggerFactory
         ) : IUserService
     {
-        private readonly IEmailSender EmailSender = emailSender;
         private readonly ILogger<UserService> Logger = loggerFactory.CreateLogger<UserService>();
         private readonly IPasswordGeneratorService PasswordGenerator = passwordGenerator;
         private readonly UserManager<ThisUser> UserManager = userManager;
@@ -151,11 +146,11 @@ namespace Portfolio.Dotnet.Identity.Users
             }
             var result = await UserManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
             // TODO: check if is possible to revoke the current token
-            var sendEmail = request.SendEmail ?? true;
-            if (result.Succeeded && sendEmail && !string.IsNullOrEmpty(user.Email))
-            {
-                await EmailSender.SendPasswordChangedEmail(new EmailRecipient(user.Email), new Email.Emails.PasswordChanged.PasswordChangedEmailModel { });
-            }
+            //var sendEmail = request.SendEmail ?? true;
+            //if (result.Succeeded && sendEmail && !string.IsNullOrEmpty(user.Email))
+            //{
+            //    await EmailSender.SendPasswordChangedEmail(new EmailRecipient(user.Email), new Email.Emails.PasswordChanged.PasswordChangedEmailModel { });
+            //}
             return new UsersOperationResponse(result.Succeeded, result.Errors?.Select(e => e.Description) ?? ["Unexpected error"]);
         }
 
@@ -369,9 +364,10 @@ namespace Portfolio.Dotnet.Identity.Users
             {
                 return new UsersOperationResponse("User doesn't have an email");
             }
-            var resetPasswordToken = await CreateResetPasswordToken(user, request.ResetPasswordUrl);
-            var result = await SendResetPasswordEmail(user.Email, resetPasswordToken);
-            return new UsersOperationResponse(result.Successful, result.ErrorMessages);
+            //var resetPasswordToken = await CreateResetPasswordToken(user, request.ResetPasswordUrl);
+            ////var result = await SendResetPasswordEmail(user.Email, resetPasswordToken);
+            //return new UsersOperationResponse(result.Successful, result.ErrorMessages);
+            return new UsersOperationResponse(true, string.Empty);
         }
 
         public async Task<UsersOperationResponse> SetPasswordWithoutToken(SetPasswordRequest request)
@@ -601,11 +597,11 @@ namespace Portfolio.Dotnet.Identity.Users
             return user;
         }
 
-        private async Task<SendEmailResponse> SendResetPasswordEmail(string email, string resetPasswordUrl)
-        {
-            var result = await EmailSender.SendResetPasswordEmail(new EmailRecipient(email), new ResetPasswordEmailModel { ResetPasswordLink = resetPasswordUrl });
-            return result;
-        }
+        //private async Task<SendEmailResponse> SendResetPasswordEmail(string email, string resetPasswordUrl)
+        //{
+        //    var result = await EmailSender.SendResetPasswordEmail(new EmailRecipient(email), new ResetPasswordEmailModel { ResetPasswordLink = resetPasswordUrl });
+        //    return result;
+        //}
 
         private static void ThrowErrorIfFailed(IdentityResult identityResult)
         {

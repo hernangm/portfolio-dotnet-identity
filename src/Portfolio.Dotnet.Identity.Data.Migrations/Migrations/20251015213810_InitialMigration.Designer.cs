@@ -5,11 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Portfolio.Dotnet.Identity.Users.Data;
+using Portfolio.Dotnet.Identity.Data.Users;
+
 
 #nullable disable
 
-namespace Portfolio.Dotnet.Identity.Users.Data.Migrations
+namespace Portfolio.Dotnet.Identity.Data.Migrations
 {
     [DbContext(typeof(ThisIdentityDbContext))]
     [Migration("20251015213810_InitialMigration")]

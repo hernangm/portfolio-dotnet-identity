@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Portfolio.Dotnet.Identity.Data.Users;
 using Portfolio.Dotnet.Identity.Server.Mvc.Account.Models;
 using Portfolio.Dotnet.Identity.Users.Contracts;
-using Portfolio.Dotnet.Identity.Users.Data;
 
 namespace Portfolio.Dotnet.Identity.Server.Mvc.Account
 {
