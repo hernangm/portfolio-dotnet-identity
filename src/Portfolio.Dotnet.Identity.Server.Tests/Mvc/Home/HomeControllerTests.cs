@@ -31,15 +31,29 @@ namespace Portfolio.Dotnet.Identity.Server.Tests.Mvc.Home
         }
 
         [TestMethod]
-        public void Index_ReturnsViewResult()
+        public void Index_WhenDevelopment_ReturnsViewResult()
         {
             // Arrange
+            _mockHostingEnvironment.Setup(e => e.EnvironmentName).Returns(Environments.Development);
 
             // Act
             var result = _controller.Index();
 
             // Assert
             Assert.IsInstanceOfType<ViewResult>(result);
+        }
+
+        [TestMethod]
+        public void Index_WhenNotDevelopment_ReturnsNotFoundResult()
+        {
+            // Arrange
+            _mockHostingEnvironment.Setup(e => e.EnvironmentName).Returns(Environments.Production);
+
+            // Act
+            var result = _controller.Index();
+
+            // Assert
+            Assert.IsInstanceOfType<NotFoundResult>(result);
         }
 
         [TestMethod]

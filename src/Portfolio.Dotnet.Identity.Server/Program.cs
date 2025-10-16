@@ -22,10 +22,9 @@ internal class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddRazorPages();
-        builder.Services.AddHealthChecks(); // Add Health Checks service
+        builder.Services.AddHealthChecks().RegisterHealthChecks();
 
         builder.Services.AddDataProtection()
-            //.SetApplicationName("ais")
             .UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration
             {
                 EncryptionAlgorithm = EncryptionAlgorithm.AES_256_CBC,
