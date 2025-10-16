@@ -85,7 +85,7 @@ jobs:
 
       - name: Create EF Migration Bundle
         run: | 
-            dotnet tool install dotnet-ef
+            dotnet tool install dotnet-ef -d
             dotnet ef migrations bundle --project ${{ env.DATA_PROJECT_PATH }} --output ${{ env.ARTIFACTS_PATH }}/${{ env.EFBUNDLE_ARTIFACT_NAME }}/efbundle --context  ${{ env.DATA_CONTEXT_NAME }} --self-contained -r linux-x64 --verbose
       
       - name: Upload EF Bundle artifact
